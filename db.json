@@ -16,19 +16,9 @@
       "text": "Выполнить задание"
     },
     {
-      "id": "004",
-      "completed": false,
-      "text": "Выполнить доп. задание"
-    },
-    {
-      "text": "qwe",
-      "completed": false,
-      "id": "CMXRdfI"
-    },
-    {
-      "text": "qwerty",
-      "completed": true,
-      "id": "PWfJQFj"
+      "id": "a887",
+      "text": "Выполнить дополнительное задание и разобрать все ошибки из прошлых уроков.",
+      "completed": false
     }
   ]
 }

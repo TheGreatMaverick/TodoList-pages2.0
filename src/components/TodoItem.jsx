@@ -1,75 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-export const TodoItem = ({ onDelete, id, text, completed, onEdit }) => {
-  const [editTodo, setEditTodo] = useState(false);
+export const TodoItem = ({ id, text, completed, onEdit }) => {
   const [disabled, setDisabled] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const inputRef = useRef(null);
-
-  const handleDelete = async (id) => {
-    setIsDeleting(true);
-
-    try {
-      await onDelete(id);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   const handleToggle = async () => {
-    if (disabled || editTodo) return;
+    if (disabled) return;
     setDisabled(true);
     await onEdit({ id, completed: !completed });
     setDisabled(false);
   };
 
-  const handleEditTodo = async (event) => {
-    event.stopPropagation();
-    if (!editTodo) return setEditTodo(true);
-    setDisabled(true);
-    await onEdit({ id, text: inputRef.current.value });
-    setDisabled(false);
-    setEditTodo(false);
-  };
-
   return (
-    <li
-      className={`todo-item ${completed ? "completed" : ""}`}
-      onClick={handleToggle}
-    >
-      {editTodo ? (
-        <div className="edit-todo">
-          <input
-            className="edit-input"
-            type="text"
-            ref={inputRef}
-            defaultValue={text}
-          />
-          <button className="save" disabled={disabled} onClick={handleEditTodo}>
-            ✅
-          </button>
-        </div>
-      ) : (
-        <>
-          <span
-            className="todo-text" /*onClick={(e) => e.stopPropagation()} останавливаем всплытие если не хотим чтобы срабатывал toggle по нажатию на сам текст*/
-          >
+    <li className={`todo-item ${completed ? "completed" : ""}`}>
+      <div className="todo-inner">
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={handleToggle}
+          disabled={disabled}
+          className="todo-checkbox"
+        />
+        <span className="todo-text">
+          <Link className="todo-link" to={`/task/${id}`}>
             {text}
-          </span>
-          <div className="button-group">
-            <button className="edit" onClick={handleEditTodo}>
-              ✏️
-            </button>
-            <button
-              disabled={isDeleting}
-              className="delete"
-              onClick={() => handleDelete(id)}
-            >
-              🗑
-            </button>
-          </div>
-        </>
-      )}
+          </Link>
+        </span>
+      </div>
     </li>
   );
 };
